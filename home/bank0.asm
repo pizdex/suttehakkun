@@ -3,20 +3,20 @@ _Start:
 	ldh [rIF], a
 	ldh [rIE], a
 	di
-	ld sp, $c0ff
+	ld sp, wStackTop
 	call Func_0447
 	call Func_05e3
 	call Func_050f
 
 	ld a, $1f
-	ld [$d61e], a
+	ld [wd61e], a
 	xor a
 	ldh [rLCDC], a
 	ldh [rSTAT], a
 	ldh [rSCY], a
 	ldh [rSCX], a
 	ld a, 1
-	ldh [$ff94], a
+	ldh [hff94], a
 	ldh [rIE], a
 	ei
 	call Func_37f0
@@ -26,27 +26,27 @@ _Start:
 	jr c, .asm_0183
 	xor a
 .asm_0183
-	ldh [$ff8a], a
+	ldh [hff8a], a
 	di
 
 Func_0186:
-	ld sp, $c0ff
+	ld sp, wStackTop
 	call Func_050f
 	xor a
-	ld [$db20], a
-	ld [$d618], a
-	ldh [$ffae], a
+	ld [wdb20], a
+	ld [wd618], a
+	ldh [hffae], a
 	ld a, 0
-	ld [$d61e], a
+	ld [wd61e], a
 	call Func_0573
 	call Func_3000
 	xor a
 	call Func_04b1
 
 Func_01a4:
-	ld sp, $c0ff
+	ld sp, wStackTop
 	call Func_050f
-	ld a, [$d61e]
+	ld a, [wd61e]
 	and $3f
 	ld c, a
 	ld b, 0
@@ -55,7 +55,7 @@ Func_01a4:
 	ld a, [hl]
 	call Func_048a
 
-	ld a, [$d61e]
+	ld a, [wd61e]
 	and $3f
 	sla a
 	ld c, a
@@ -118,33 +118,33 @@ VBlank:
 	push bc
 	push de
 	push hl
-	ldh a, [$ff9b]
-	ldh [$ff9d], a
-	call $ff80
-	ld a, [$d600]
+	ldh a, [hff9b]
+	ldh [hff9d], a
+	call hff80
+	ld a, [wd600]
 	ldh [rBGP], a
-	ld a, [$d601]
+	ld a, [wd601]
 	ldh [rOBP0], a
-	ld a, [$d602]
+	ld a, [wd602]
 	ldh [rOBP1], a
-	ldh a, [$ff98]
+	ldh a, [hff98]
 	ldh [rSCY], a
-	ldh a, [$ff99]
+	ldh a, [hff99]
 	ldh [rSCX], a
-	ld a, [$db20]
+	ld a, [wdb20]
 	and a
 	jp nz, Func_03ce
 
-	ld a, [$d61e]
+	ld a, [wd61e]
 	and $3f
 	ld c, a
 	ld b, 0
 	ld hl, .functable_bank
 	add hl, bc
 	ld a, [hl]
-	ld [$21ff], a
+	ld [MBC2RomBank], a
 
-	ld a, [$d61e]
+	ld a, [wd61e]
 	and $3f
 	sla a
 	ld c, a
@@ -211,7 +211,15 @@ Func_048a:
 	dr $048a, $04b1
 
 Func_04b1:
-	dr $04b1, $050f
+	and $3f
+	ld b, a
+	ld a, [wd61e]
+	and $c0
+	or b
+	ld [wd61e], a
+	ret
+
+INCLUDE "home/joypad.asm"
 
 Func_050f:
 	dr $050f, $0573
@@ -329,7 +337,7 @@ Serial:
 	push bc
 	push de
 	push hl
-	ld a, [$d692]
+	ld a, [wd692]
 	cp $ff
 	jr z, Func_20aa
 
