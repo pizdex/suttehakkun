@@ -25,8 +25,8 @@ hff96:: ds 1
 hff97:: ds 1
 hff98:: ds 1
 hff99:: ds 1
-hff9a:: ds 1
-hff9b:: ds 1
+hTempBank:: ds 1
+hROMBank:: ds 1
 hff9c:: ds 1
 hff9d:: ds 1
 hff9e:: ds 1
